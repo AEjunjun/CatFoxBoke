@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>俊俊菌的博客 | 静态博客</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+	<style>
+	/* 推荐版本：简洁箭头光标系统 */
+	
+	/* === 常规状态：蔚蓝档案风格箭头 === */
+	* {
+	    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><polygon points="2,2 22,2 2,22" fill="rgba(100,200,255,0.7)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linejoin="round"/><polygon points="5,5 18,5 5,18" fill="rgba(255,255,255,0.4)"/></svg>') 2 2, auto;
+	}
+	
+	/* === 链接/按钮状态：亮粉色箭头 === */
+	a, button, [role="button"], .clickable,
+	input[type="submit"], input[type="button"],
+	.nav-item, .social-btn, .project-link {
+	    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><polygon points="3,3 25,3 3,25" fill="rgba(255,120,180,0.85)" stroke="rgba(255,255,255,0.95)" stroke-width="2" stroke-linejoin="round"/><polygon points="7,7 20,7 7,20" fill="rgba(255,255,255,0.6)"/><circle cx="9" cy="9" r="1.2" fill="rgba(255,255,255,0.9)"/></svg>') 3 3, pointer;
+	}
+	</style>
+<body>
+    <!-- 自定义背景 - 可以替换成你自己的图片 -->
+    <div class="custom-bg" id="customBg"></div>
+    
+    <!-- 毛玻璃遮罩层 -->
+    <div class="glass-overlay"></div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar glass-sidebar" id="sidebar">
+            <!-- 用户信息卡片 -->
+            <div class="user-card">
+                <div class="user-avatar">
+                    <img src="./Toxiang.jpg" alt="头像" class="avatar-img">
+                    <div class="online-status"></div>
+                </div>
+                <h2 class="username">俊俊菌</h2>
+                <p class="user-desc">就算步伐很小，也要步步前进✨</p>
+                <div class="user-tags">
+                    <span class="user-tag">游戏开发</span>
+                    <span class="user-tag">音乐爱好者</span>
+                    <span class="user-tag">美术爱好者</span>
+					<span class="user-tag">Furry爱好者</span>
+                </div>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li>
+                        <a href="#home" class="nav-item active" data-icon="🌃">
+                            <span class="nav-icon">🌃</span>
+                            <span class="nav-text">首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#blog" class="nav-item" data-icon="🌠">
+                            <span class="nav-icon">🌠</span>
+                            <span class="nav-text">文章</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#projects" class="nav-item" data-icon="☕">
+                            <span class="nav-icon">☕</span>
+                            <span class="nav-text">项目</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="nav-item" data-icon="🌌">
+                            <span class="nav-icon">🌌</span>
+                            <span class="nav-text">关于</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="nav-item" data-icon="🌉">
+                            <span class="nav-icon">🌉</span>
+                            <span class="nav-text">联系</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- 社交链接 -->
+                <div class="social-links">
+                    <a href="https://github.com/AEjunjun" class="social-btn" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://space.bilibili.com/3546657970981266?spm_id_from=333.1387.0.0" class="social-btn" target="_blank" title="Bilibili">
+                        <i class="fab fa-bilibili"></i>
+                    </a>
+                    <a href="#" class="social-btn" target="_blank" title="Twitter[被封禁]">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.zhihu.com/people/catfoxjun" class="social-btn" target="_blank" title="知乎">
+                        <i class="fab fa-zhihu"></i>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- 侧边栏切换按钮（移动端） -->
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 头部 -->
+            <header class="main-header">
+                <h1 class="site-title">CatFoxJun的个人博客</h1>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" title="切换主题">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="bg-toggle" id="bgToggle" title="更换背景">
+                        <i class="fas fa-image"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- 内容区域 -->
+            <div class="content-sections">
+                <!-- 首页内容 -->
+                <section class="content-section active" id="homeContent">
+                    <!-- 欢迎卡片 -->
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-star"></i>我想说的</h3>
+                        </div>
+                        <div class="welcome-content">
+                            <p>你好！欢迎来到我的个人博客！</p>
+                            <p>我是一名独立游戏开发作者...</p>
+                            <p>我会在这里分享我的项目，还有我的心得，谢谢大家啦！</p>
+							<p>建议大家换黑色模式...白色写炸了QAQ！</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 技能卡片 -->
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-code"></i> 技能栈</h3>
+                        </div>
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h4>前端开发</h4>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">HTML前端工程师</span>
+                                </div>
+                            </div>
+							<div class="skill-category">
+							    <h4>后端开发-包括游戏开发</h4>
+							    <div class="skill-tags">
+							        <span class="skill-tag">C/C++</span>
+									<span class="skill-tag">Python</span>
+									<span class="skill-tag">C#</span>
+							    </div>
+							</div>
+                            <div class="skill-category">
+                                <h4>设计工具</h4>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Adobe Photoshop</span>
+									<span class="skill-tag">Adobe After Effects</span>
+									<span class="skill-tag">Adobe Illustrator</span>
+                                </div>
+                            </div>
+                            <div class="skill-category">
+                                <h4>其他</h4>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">FL Studio</span>
+									<span class="skill-tag">Unity Hub</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 最新动态 -->
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-rss"></i> 最新动态</h3>
+                        </div>
+                        <div class="updates-list">
+                            <div class="update-item">
+                                <div class="update-date">2025-03-30</div>
+                                <div class="update-content">搭建了自己的个人博客uwu</div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 文章内容 -->
+                <section class="content-section" id="blogContent">
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-feather-alt"></i> 文章列表</h3>
+                        </div>
+                        <div class="articles-list">
+                            <!-- 文章1 -->
+                            <article class="article-item">
+                                <div class="article-header">
+                                    <h4 class="article-title">敬请期待</h4>
+                                    <span class="article-date">还没写文张哇！</span>
+                                </div>
+                                <p class="article-excerpt">咕咕嘎嘎</p>
+                                <div class="article-meta">
+                                    <span class="article-category">CatFox</span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 项目内容 -->
+                <section class="content-section" id="projectsContent">
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-laptop-code"></i> 项目展示</h3>
+                        </div>
+                        <div class="projects-grid">
+                            <!-- 项目1 -->
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <h4 class="project-title">简单软件限制【未开源】</h4>
+                                    <div class="project-links">
+                                        <a href="https://github.com/YOUR_USERNAME/blog" target="_blank" class="project-link">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        <a href="https://demo.example.com" target="_blank" class="project-link">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="project-desc">基于C++开发的Windows软件，它可以到规定时间限制软件运行</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">C++</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 关于内容 -->
+                <section class="content-section" id="aboutContent">
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-user"></i> 关于我</h3>
+                        </div>
+                        <div class="about-content">
+                            <div class="about-text">
+                                <p>你好！我是一名独立游戏开发作者同时也是一名前后端工作人员uwu</p>
+                                <p>将来想要成为一名有名的游戏开发作者。。。但愿某一天me会成功的吧...xwx</p>
+                                <p>在我的学习生涯中，我积累了丰富的Web开发经验，包括：</p>
+                                <ul class="about-list">
+                                    <li>Ubuntu服务器搭建</li>
+                                    <li>Html前端设计</li>
+                                    <li>与我的朋友们开创合作紧密</li>
+                                    <li>探索新技术和最佳实践</li>
+                                </ul>
+                                <p>除了编程，我还喜欢：</p>
+                                <ul class="about-list">
+                                    <li>🐱 喜欢Furry文化</li>
+                                    <li>🎵 听各种类型的音乐也喜欢音乐创作！</li>
+                                    <li>🎮 玩独立游戏</li>
+                                    <li>☕ 品尝精品咖啡</li>
+									<li>🌉 仰望星空看风景</li>
+                                </ul>
+                                <p>我相信，总有一天我成为一名合格的游戏开发者，加油！</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间线 -->
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-history"></i> 时间线</h3>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2025 - 至今</div>
+                                <div class="timeline-content">
+                                    <h4>省级开展Ubuntu树莓派变成比赛</h4>
+                                    <p>在团队中担任一个重要的位置</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 联系内容 -->
+                <section class="content-section" id="contactContent">
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-envelope"></i> 联系我</h3>
+                        </div>
+                        <div class="contact-content">
+                            <p>如果你想讨论技术、合作项目，或者只是打个招呼，都可以通过以下方式联系我。</p>
+                            
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <div class="contact-label">邮箱</div>
+                                        <a href="mailto:catfox_junjun@outlook.com" class="contact-value">Catfox_junjun@outlook.com</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <div class="contact-label">位置</div>
+                                        <div class="contact-value">中国</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-social">
+                                <a href="https://github.com/AEjunjun" class="social-link" target="_blank">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub</span>
+                                </a>
+                                <a href="https://space.bilibili.com/3546657970981266?spm_id_from=333.1387.0.0" class="social-link" target="_blank">
+                                    <i class="fab fa-bilibili"></i>
+                                    <span>Bilibili</span>
+                                </a>
+                                <a href="#" class="social-link" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                    <span>Twitter</span>
+                                </a>
+                                <a href="https://www.zhihu.com/people/catfoxjun" class="social-link" target="_blank">
+                                    <i class="fab fa-zhihu"></i>
+                                    <span>知乎</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- 页脚 -->
+            <footer class="glass-footer">
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <div class="logo">
+                            <span class="logo-text">我的空间</span>
+                        </div>
+                        <p class="footer-tagline">记录思考，分享知识</p>
+                    </div>
+                    
+                    <div class="footer-right">
+                        <div class="footer-links">
+                            <a href="https://github.com/AEjunjun" class="footer-link">项目</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p class="copyright">© 2025 CatFox个人空间. 保留所有权利.</p>
+                    <p class="footer-note">-=本网站为静态页面，所有内容均在本地编辑=-</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- 背景选择面板 -->
+    <div class="bg-selector" id="bgSelector">
+        <div class="bg-selector-header">
+            <h3>选择背景</h3>
+            <button class="close-selector" id="closeSelector">&times;</button>
+        </div>
+        <div class="bg-grid">
+            <div class="bg-option active" data-bg="url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
+                <span>雪山</span>
+            </div>
+            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
+                <span>星空</span>
+            </div>
+            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
+                <span>森林</span>
+            </div>
+            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
+                <span>海洋</span>
+            </div>
+        </div>
+        <div class="custom-bg-upload">
+            <label for="bgUpload" class="upload-btn">
+                <i class="fas fa-upload"></i> 上传自定义背景
+            </label>
+            <input type="file" id="bgUpload" accept="image/*" style="display: none;">
+        </div>
+    </div>
+
+    <!-- 脚本引入 -->
+    <script src="script.js"></script>
+</body>
+</html>
