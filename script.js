@@ -1,26 +1,32 @@
-// 页面加载完成后执行
+// ===== Personal Website V2 - Main Script =====
+
+// Page Load Complete
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 个人静态博客已加载');
+    console.log('🚀 俊俊菌的个人博客 V2 已加载');
     
-    // 初始化所有功能
+    // Initialize all functions
     initThemeToggle();
     initSidebarToggle();
     initNavigation();
     initBackgroundSelector();
-    initCustomCursor();
+    initParticles();
     
-    // 页面加载动画
+    // Page load animation
     setTimeout(() => {
         document.body.style.opacity = 1;
+        document.body.classList.add('loaded');
     }, 100);
+    
+    // Console Easter Egg
+    showConsoleEasterEgg();
 });
 
-// 1. 主题切换
+// ===== 1. Theme Toggle (Dark/Light Mode) =====
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = themeToggle.querySelector('i');
     
-    // 检查本地存储
+    // Check local storage for saved theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     
     if (savedTheme === 'dark') {
@@ -36,17 +42,17 @@ function initThemeToggle() {
             themeIcon.classList.remove('fa-moon');
             themeIcon.classList.add('fa-sun');
             localStorage.setItem('theme', 'dark');
-            console.log('🌙 切换至暗色模式');
+            showNotification('🌙 已切换至暗色模式', 'dark');
         } else {
             themeIcon.classList.remove('fa-sun');
             themeIcon.classList.add('fa-moon');
             localStorage.setItem('theme', 'light');
-            console.log('🌞 切换至亮色模式');
+            showNotification('☀️ 已切换至亮色模式', 'light');
         }
     });
 }
 
-// 2. 侧边栏切换（移动端）
+// ===== 2. Sidebar Toggle (Mobile) =====
 function initSidebarToggle() {
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -60,23 +66,36 @@ function initSidebarToggle() {
         if (sidebar.classList.contains('active')) {
             sidebarIcon.classList.remove('fa-bars');
             sidebarIcon.classList.add('fa-times');
+            document.body.style.overflow = 'hidden';
         } else {
             sidebarIcon.classList.remove('fa-times');
             sidebarIcon.classList.add('fa-bars');
+            document.body.style.overflow = '';
         }
     });
     
-    // 点击主内容区关闭侧边栏（移动端）
+    // Close sidebar when clicking main content
     document.querySelector('.main-content').addEventListener('click', () => {
         if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
             sidebar.classList.remove('active');
             sidebarIcon.classList.remove('fa-times');
             sidebarIcon.classList.add('fa-bars');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close sidebar when pressing Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            sidebarIcon.classList.remove('fa-times');
+            sidebarIcon.classList.add('fa-bars');
+            document.body.style.overflow = '';
         }
     });
 }
 
-// 3. 导航切换
+// ===== 3. Navigation =====
 function initNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const contentSections = document.querySelectorAll('.content-section');
@@ -85,27 +104,33 @@ function initNavigation() {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // 移除所有active类
+            // Remove all active classes
             navItems.forEach(nav => nav.classList.remove('active'));
             contentSections.forEach(section => section.classList.remove('active'));
             
-            // 添加active类到当前项
+            // Add active class to current item
             item.classList.add('active');
             
-            // 显示对应的内容区
+            // Show corresponding content section
             const target = item.getAttribute('href').substring(1);
             const targetSection = document.getElementById(target + 'Content');
             if (targetSection) {
                 targetSection.classList.add('active');
                 
-                // 添加淡入动画
+                // Add animation
                 targetSection.classList.add('fade-in');
                 setTimeout(() => {
                     targetSection.classList.remove('fade-in');
-                }, 300);
+                }, 400);
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
             
-            // 移动端自动关闭侧边栏
+            // Close sidebar on mobile
             if (window.innerWidth <= 1024) {
                 const sidebar = document.getElementById('sidebar');
                 const sidebarToggle = document.getElementById('sidebarToggle');
@@ -114,15 +139,17 @@ function initNavigation() {
                 sidebar.classList.remove('active');
                 sidebarIcon.classList.remove('fa-times');
                 sidebarIcon.classList.add('fa-bars');
+                document.body.style.overflow = '';
             }
         });
     });
 }
 
-// 4. 背景选择器
+// ===== 4. Background Selector =====
 function initBackgroundSelector() {
     const bgToggle = document.getElementById('bgToggle');
     const bgSelector = document.getElementById('bgSelector');
+    const bgOverlay = document.getElementById('bgSelectorOverlay');
     const closeSelector = document.getElementById('closeSelector');
     const bgOptions = document.querySelectorAll('.bg-option');
     const bgUpload = document.getElementById('bgUpload');
@@ -130,58 +157,71 @@ function initBackgroundSelector() {
     
     if (!bgToggle) return;
     
-    // 打开背景选择器
+    // Open background selector
     bgToggle.addEventListener('click', () => {
         bgSelector.classList.add('active');
+        bgOverlay.classList.add('active');
     });
     
-    // 关闭背景选择器
-    closeSelector.addEventListener('click', () => {
+    // Close background selector
+    function closeBgSelector() {
         bgSelector.classList.remove('active');
-    });
+        bgOverlay.classList.remove('active');
+    }
     
-    // 点击背景选择器外部关闭
-    bgSelector.addEventListener('click', (e) => {
-        if (e.target === bgSelector) {
-            bgSelector.classList.remove('active');
+    closeSelector.addEventListener('click', closeBgSelector);
+    bgOverlay.addEventListener('click', closeBgSelector);
+    
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && bgSelector.classList.contains('active')) {
+            closeBgSelector();
         }
     });
     
-    // 选择预设背景
+    // Select preset background
     bgOptions.forEach(option => {
         option.addEventListener('click', () => {
-            // 移除所有active类
+            // Remove all active classes
             bgOptions.forEach(opt => opt.classList.remove('active'));
             
-            // 添加active类到当前选项
+            // Add active class to current option
             option.classList.add('active');
             
-            // 更改背景
+            // Change background
             const bgUrl = option.getAttribute('data-bg');
             customBg.style.backgroundImage = bgUrl;
             
-            // 保存到本地存储
+            // Save to local storage
             localStorage.setItem('customBackground', bgUrl);
             
-            console.log('🎨 背景已更换');
+            showNotification('🎨 背景已更换', 'success');
         });
     });
     
-    // 上传自定义背景
+    // Upload custom background
     if (bgUpload) {
         bgUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('❌ 图片大小不能超过 5MB', 'error');
+                    return;
+                }
+                
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
                     const bgUrl = `url('${e.target.result}')`;
                     customBg.style.backgroundImage = bgUrl;
                     localStorage.setItem('customBackground', bgUrl);
-                    console.log('🖼️ 自定义背景已上传');
                     
-                    // 关闭选择器
-                    bgSelector.classList.remove('active');
+                    // Remove active from preset options
+                    bgOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    showNotification('🖼️ 自定义背景已上传', 'success');
+                    closeBgSelector();
                 };
                 
                 reader.readAsDataURL(file);
@@ -189,70 +229,120 @@ function initBackgroundSelector() {
         });
     }
     
-    // 加载保存的背景
+    // Load saved background
     const savedBg = localStorage.getItem('customBackground');
     if (savedBg) {
         customBg.style.backgroundImage = savedBg;
+        
+        // Mark corresponding option as active
+        bgOptions.forEach(option => {
+            if (option.getAttribute('data-bg') === savedBg) {
+                option.classList.add('active');
+            }
+        });
     }
 }
 
-// 5. 自定义光标增强
-function initCustomCursor() {
-    // 为链接和按钮添加悬停效果
-    const interactiveElements = document.querySelectorAll('a, button, .clickable');
+// ===== 5. Particle Effect =====
+function initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
     
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            el.style.transform = 'scale(1.05)';
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            el.style.transform = 'scale(1)';
-        });
-    });
+    const particleCount = 15;
     
-    // 为卡片添加悬停效果
-    const cards = document.querySelectorAll('.glass-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-        });
-    });
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(particlesContainer, i);
+    }
 }
 
-// 6. 窗口大小调整处理
-window.addEventListener('resize', () => {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
+function createParticle(container, index) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
     
-    if (!sidebarToggle) return;
+    // Random position
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
     
-    const sidebarIcon = sidebarToggle.querySelector('i');
+    // Random size
+    const size = 2 + Math.random() * 4;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
     
-    // 在大屏设备上自动展开侧边栏
-    if (window.innerWidth > 1024) {
-        sidebar.classList.remove('active');
-        if (sidebarIcon) {
-            sidebarIcon.classList.remove('fa-times');
-            sidebarIcon.classList.add('fa-bars');
-        }
-    }
-});
+    // Random opacity
+    particle.style.opacity = 0.1 + Math.random() * 0.3;
+    
+    container.appendChild(particle);
+}
 
-// 7. 添加控制台彩蛋
-console.log('%c✨ 欢迎来到我的静态个人博客！', 
-    'color: #00a1d6; font-size: 16px; font-weight: bold;');
-console.log('%c这是一个纯静态网站，所有内容都在本地编辑。', 
-    'color: #ff6b6b;');
-console.log('%c修改内容只需编辑HTML文件即可。', 
-    'color: #00a1d6;');
+// ===== 6. Notification System =====
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = '<span>' + message + '</span>';
+    
+    // Add styles
+    Object.assign(notification.style, {
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        padding: '14px 24px',
+        background: 'var(--bg-card)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderRadius: 'var(--radius-md)',
+        boxShadow: 'var(--shadow-lg)',
+        border: '1px solid var(--border-light)',
+        color: 'var(--text-primary)',
+        fontSize: '0.95rem',
+        fontWeight: '500',
+        zIndex: '9999',
+        transform: 'translateY(100px)',
+        opacity: '0',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    });
+    
+    // Set color based on type
+    const colors = {
+        success: 'var(--primary)',
+        error: 'var(--secondary)',
+        dark: 'var(--text-primary)',
+        light: 'var(--text-secondary)',
+        info: 'var(--primary)'
+    };
+    notification.style.borderLeft = '4px solid ' + (colors[type] || colors.info);
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    requestAnimationFrame(function() {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+    
+    // Auto remove after 3 seconds
+    setTimeout(function() {
+        notification.style.transform = 'translateY(20px)';
+        notification.style.opacity = '0';
+        setTimeout(function() { notification.remove(); }, 400);
+    }, 3000);
+}
 
-// 8. 页面平滑滚动
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// ===== 7. Console Easter Egg =====
+function showConsoleEasterEgg() {
+    console.log('%c✨ 欢迎来到俊俊菌的个人博客 V2 ✨', 'color: #00a1d6; font-size: 18px; font-weight: bold;');
+    console.log('%c这是一个用心设计的个人网站，希望你会喜欢 💖', 'color: #ff6b6b');
+    console.log('%c技术栈: HTML5 + CSS3 + Vanilla JavaScript', 'color: #ffd166');
+    console.log('%c🎮 游戏开发 | 🎵 音乐创作 | 🎨 美术设计', 'color: #4CAF50');
+}
+
+// ===== 8. Smooth Scroll for Anchor Links =====
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
@@ -268,26 +358,65 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 9. 初始化滚动动画
+// ===== 9. Scroll Animations (Intersection Observer) =====
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in');
             }
         });
     }, observerOptions);
     
-    // 观察所有卡片
-    document.querySelectorAll('.glass-card').forEach(card => {
+    // Observe all cards
+    document.querySelectorAll('.glass-card').forEach(function(card) {
         observer.observe(card);
     });
 }
 
-// 初始化滚动动画
+// Initialize scroll animations
 setTimeout(initScrollAnimations, 500);
+
+// ===== 10. Window Resize Handler =====
+window.addEventListener('resize', function() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    
+    if (!sidebarToggle) return;
+    
+    const sidebarIcon = sidebarToggle.querySelector('i');
+    
+    // On large screens, auto expand sidebar
+    if (window.innerWidth > 1024) {
+        sidebar.classList.remove('active');
+        sidebarIcon.classList.remove('fa-times');
+        sidebarIcon.classList.add('fa-bars');
+        document.body.style.overflow = '';
+    }
+});
+
+// ===== 11. Card Hover Effects =====
+document.querySelectorAll('.glass-card').forEach(function(card) {
+    card.addEventListener('mouseenter', function() {
+        card.style.transform = 'translateY(-6px)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        card.style.transform = 'translateY(0)';
+    });
+});
+
+// ===== 12. Article Click Handler =====
+document.querySelectorAll('.article-item').forEach(function(article) {
+    article.addEventListener('click', function() {
+        const title = article.querySelector('.article-title');
+        if (title && title.textContent.indexOf('敬请期待') > -1) {
+            showNotification('📝 文章正在创作中，敬请期待！', 'info');
+        }
+    });
+});
