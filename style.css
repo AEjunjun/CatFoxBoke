@@ -1556,13 +1556,15 @@ input[type="submit"], input[type="button"],
   z-index: 1002;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease;
   overflow-y: auto;
+  display: none;
 }
 
 .article-reader.active {
   opacity: 1;
   visibility: visible;
+  display: block;
 }
 
 .article-reader-header {
@@ -1628,6 +1630,15 @@ input[type="submit"], input[type="button"],
   font-size: 0.95rem;
 }
 
+.article-reader-category {
+  background: linear-gradient(135deg, rgba(0, 161, 214, 0.1), rgba(0, 161, 214, 0.05));
+  color: var(--primary);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(0, 161, 214, 0.15);
+}
+
 .article-reader-body {
   background: transparent !important;
   padding: 0 !important;
@@ -1684,7 +1695,6 @@ input[type="submit"], input[type="button"],
 .article-reader-body a {
   color: var(--primary);
   text-decoration: none;
-  transition: var(--transition);
 }
 
 .article-reader-body a:hover {
@@ -1710,12 +1720,11 @@ input[type="submit"], input[type="button"],
   font-style: italic;
 }
 
-/* 阅读更多按钮 */
 .article-read-more {
   color: var(--primary);
   font-size: 0.85rem;
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.3s ease;
 }
 
 .article-item:hover .article-read-more {
