@@ -3,18 +3,10 @@
 
 const POSTS_CONFIG = [
     {
-        id: 'welcome',
-        title: '欢迎来到我的博客',
-        date: '2025-03-30',
-        category: '公告',
-        excerpt: '欢迎大家！这是我的第一篇博客文章，介绍这个博客的用途和目标。',
-        mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/README.md'
-    },
-    {
         id: 'Helpcome',
         title: '欢迎来到我的博客',
         date: '2026-05-8',
-        category: '公告',
+        category: '通知',
         excerpt: '欢迎大家！这是我的第一篇博客文章，介绍这个博客的用途和目标。',
         mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/介绍个人博客.md'
     }
