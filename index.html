@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="/CatFoxBoke/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Markdown 渲染 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.3.0/github-markdown.min.css">
 </head>
 <body>
     <!-- Particles Effect -->
@@ -211,21 +213,9 @@
                         <div class="section-header">
                             <h3><i class="fas fa-feather-alt"></i> 文章列表</h3>
                         </div>
-                        <div class="articles-list">
-                            <!-- Article 1 -->
-                            <article class="article-item">
-								<!-- <a href="com" class="footer-link"> -->
-										<div class="article-header">
-										<h4 class="article-title">敬请期待</h4>
-										<span class="article-date">待发布</span>
-									</div>
-									<p class="article-excerpt">咕咕嘎嘎... 文章正在创作中，敬请期待！</p>
-									<div class="article-meta">
-										<span class="article-category">CatFox</span>
-									</div>
-								<!-- </a> -->
-                            </article>
-							
+                        <div class="articles-list" id="articlesList">
+                            <!-- 文章会通过 JS 动态渲染 -->
+                            <div class="loading"></div>
                         </div>
                     </div>
                 </section>
@@ -441,6 +431,27 @@
     <!-- Background Selector Overlay -->
     <div class="bg-selector-overlay" id="bgSelectorOverlay"></div>
     
+    <!-- Article Reader Modal -->
+    <div class="bg-selector-overlay" id="articleOverlay"></div>
+    <div class="article-reader" id="articleReader">
+        <div class="article-reader-header">
+            <button class="back-btn" id="backToList">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </button>
+            <button class="close-selector" id="closeArticle">&times;</button>
+        </div>
+        <div class="article-reader-content">
+            <h1 class="article-reader-title" id="articleTitle"></h1>
+            <div class="article-reader-meta">
+                <span class="article-reader-date" id="articleDate"></span>
+                <span class="article-reader-category" id="articleCategory"></span>
+            </div>
+            <div class="article-reader-body markdown-body" id="articleBody">
+                <div class="loading"></div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Background Selector Modal -->
     <div class="bg-selector" id="bgSelector">
         <div class="bg-selector-header">
@@ -490,6 +501,8 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/CatFoxBoke/posts.js"></script>
     <script src="/CatFoxBoke/script.js"></script>
 </body>
 </html>

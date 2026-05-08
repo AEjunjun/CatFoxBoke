@@ -420,3 +420,170 @@ document.querySelectorAll('.article-item').forEach(function(article) {
         }
     });
 });
+
+// ===== 13. Article System =====
+function initArticleSystem() {
+    renderArticleList();
+    initArticleReader();
+    checkUrlForArticle();
+}
+
+// 渲染文章列表
+function renderArticleList() {
+    const container = document.getElementById('articlesList');
+    if (!container || !POSTS_CONFIG) return;
+    
+    if (POSTS_CONFIG.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">暂无文章 owo</p>';
+        return;
+    }
+    
+    container.innerHTML = POSTS_CONFIG.map(post => `
+        <article class="article-item" data-post-id="${post.id}">
+            <div class="article-header">
+                <h4 class="article-title">${post.title}</h4>
+                <span class="article-date">${post.date}</span>
+            </div>
+            <p class="article-excerpt">${post.excerpt}</p>
+            <div class="article-meta">
+                <span class="article-category">${post.category}</span>
+                <span class="article-read-more">点击阅读 →</span>
+            </div>
+        </article>
+    `).join('');
+    
+    // 绑定点击事件
+    container.querySelectorAll('.article-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const postId = item.dataset.postId;
+            openArticle(postId);
+        });
+    });
+}
+
+// 初始化文章阅读器
+function initArticleReader() {
+    const overlay = document.getElementById('articleOverlay');
+    const reader = document.getElementById('articleReader');
+    const closeBtn = document.getElementById('closeArticle');
+    const backBtn = document.getElementById('backToList');
+    
+    if (!overlay || !reader) return;
+    
+    // 关闭按钮
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeArticle);
+    }
+    
+    // 点击遮罩关闭
+    overlay.addEventListener('click', closeArticle);
+    
+    // 返回列表按钮
+    if (backBtn) {
+        backBtn.addEventListener('click', closeArticle);
+    }
+    
+    // ESC 关闭
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && reader.classList.contains('active')) {
+            closeArticle();
+        }
+    });
+}
+
+// 打开文章
+function openArticle(postId) {
+    const post = POSTS_CONFIG.find(p => p.id === postId);
+    if (!post) return;
+    
+    const overlay = document.getElementById('articleOverlay');
+    const reader = document.getElementById('articleReader');
+    const titleEl = document.getElementById('articleTitle');
+    const dateEl = document.getElementById('articleDate');
+    const categoryEl = document.getElementById('articleCategory');
+    const bodyEl = document.getElementById('articleBody');
+    
+    // 设置标题和元信息
+    if (titleEl) titleEl.textContent = post.title;
+    if (dateEl) dateEl.textContent = post.date;
+    if (categoryEl) {
+        categoryEl.textContent = post.category;
+        categoryEl.style.cssText = `
+            background: linear-gradient(135deg, rgba(0, 161, 214, 0.1), rgba(0, 161, 214, 0.05));
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 161, 214, 0.15);
+        `;
+    }
+    
+    // 显示加载状态
+    if (bodyEl) {
+        bodyEl.innerHTML = '<div class="loading"></div>';
+    }
+    
+    // 打开模态框
+    overlay.classList.add('active');
+    reader.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // 加载 Markdown 内容
+    fetch(post.mdUrl)
+        .then(res => {
+            if (!res.ok) throw new Error('加载失败');
+            return res.text();
+        })
+        .then(mdText => {
+            if (bodyEl) {
+                bodyEl.innerHTML = marked.parse(mdText);
+            }
+        })
+        .catch(err => {
+            if (bodyEl) {
+                bodyEl.innerHTML = `<p style="color: var(--secondary); text-align: center; padding: 40px;">
+                    📝 文章加载失败，请稍后重试 owx<br>
+                    <small style="color: var(--text-light);">${err}</small>
+                </p>`;
+            }
+        });
+    
+    // 修改 URL（不刷新页面）
+    history.pushState({postId}, '', '#' + postId);
+}
+
+// 关闭文章
+function closeArticle() {
+    const overlay = document.getElementById('articleOverlay');
+    const reader = document.getElementById('articleReader');
+    
+    if (overlay) overlay.classList.remove('active');
+    if (reader) reader.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // 恢复 URL
+    history.pushState(null, '', window.location.pathname);
+}
+
+// 检查 URL 是否有文章参数
+function checkUrlForArticle() {
+    const hash = window.location.hash.substring(1);
+    if (hash && POSTS_CONFIG) {
+        const post = POSTS_CONFIG.find(p => p.id === hash);
+        if (post) {
+            setTimeout(() => openArticle(hash), 100);
+        }
+    }
+}
+
+// 监听浏览器前进后退
+window.addEventListener('popstate', function(e) {
+    if (e.state && e.state.postId) {
+        openArticle(e.state.postId);
+    } else {
+        closeArticle();
+    }
+});
+
+// 初始化文章系统
+initArticleSystem();
