@@ -16,7 +16,7 @@ const POSTS_CONFIG = [
         date: '2026-05-9',
         category: '文章',
         excerpt: '对于小工作室的管理方案',
-        mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/工作室/人员管理方案.md'
+        mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/人员管理方案.md'
     }
     // 添加新文章复制下面块，注意逗号分隔
     // ,{
