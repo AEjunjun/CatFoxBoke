@@ -14,7 +14,7 @@ const POSTS_CONFIG = [
         id: 'Helpcome',
         title: '小工作室人员管理方案',
         date: '2026-05-9',
-        category: '通知',
+        category: '文章',
         excerpt: '对于小工作室的管理方案',
         mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/工作室/人员管理方案.md'
     }
