@@ -11,7 +11,7 @@ const POSTS_CONFIG = [
         mdUrl: 'https://raw.githubusercontent.com/AEjunjun/Personal-Document-Library/main/介绍个人博客.md'
     },
     {
-        id: 'Helpcome',
+        id: 'Guanli',
         title: '小工作室人员管理方案',
         date: '2026-05-9',
         category: '文章',
