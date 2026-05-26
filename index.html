@@ -22,18 +22,27 @@
     <link rel="stylesheet" href="/CatFoxBoke/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Markdown 渲染 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.3.0/github-markdown.min.css">
 </head>
 <body>
-    <!-- Particles Effect -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Custom Background -->
+    <!-- Animated Background Base -->
+    <div class="bg-canvas"></div>
+
+    <!-- Dynamic Light Orbs -->
+    <div class="orb-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Star Canvas -->
+    <canvas id="starCanvas"></canvas>
+
+    <!-- Mouse Glow -->
+    <div id="mouseGlow"></div>
+
+    <!-- Custom Background (用户切换) -->
     <div class="custom-bg" id="customBg"></div>
-    
-    <!-- Glass Overlay -->
-    <div class="glass-overlay"></div>
     
     <!-- Main Container -->
     <div class="container">
@@ -43,7 +52,7 @@
                 <!-- User Card -->
                 <div class="user-card">
                     <div class="user-avatar">
-                        <img src="Toxiang.jpg" alt="头像" class="avatar-img">
+                        <img src="/CatFoxBoke/Toxiang.jpg" alt="头像" class="avatar-img">
                         <div class="online-status"></div>
                     </div>
                     <h2 class="username">俊俊菌</h2>
@@ -65,16 +74,17 @@
                                 <span class="nav-text">首页</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#blog" class="nav-item" data-section="blog">
-                                <span class="nav-icon">🌉</span>
-                                <span class="nav-text">文章</span>
-                            </a>
-                        </li>
+
                         <li>
                             <a href="#projects" class="nav-item" data-section="projects">
                                 <span class="nav-icon">☕</span>
                                 <span class="nav-text">项目</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#awards" class="nav-item" data-section="awards">
+                                <span class="nav-icon">🏆</span>
+                                <span class="nav-text">荣誉墙</span>
                             </a>
                         </li>
                         <li>
@@ -108,22 +118,22 @@
                     </div>
                 </nav>
             </div>
-            
-            <!-- Sidebar Toggle Button -->
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
         </aside>
-        
+
+        <!-- Sidebar Toggle Button (手机端汉堡菜单) -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
             <header class="main-header">
                 <h1 class="site-title">CatFoxJun 的个人博客</h1>
                 <div class="header-actions">
-                    <button class="theme-toggle" id="themeToggle" title="切换主题">
-                        <i class="fas fa-moon"></i>
-                    </button>
                     <button class="bg-toggle" id="bgToggle" title="更换背景">
                         <i class="fas fa-image"></i>
                     </button>
@@ -143,7 +153,7 @@
                             <p>你好！欢迎来到我的个人博客！</p>
                             <p>我是一名独立游戏开发作者，同时也热爱音乐创作与美术设计 🎨</p>
                             <p>我会在这里分享我的项目，还有我的心得，谢谢大家啦！</p>
-                            <p>建议大家换黑色模式浏览...效果更加!uwu</p>
+                            <p>The shortest way to do many things is to only one thing at a time.</p>
                         </div>
                     </div>
                     
@@ -189,35 +199,6 @@
                         </div>
                     </div>
                     
-                    <!-- Updates Card -->
-                    <div class="section-card glass-card">
-                        <div class="section-header">
-                            <h3><i class="fas fa-rss"></i> 最新动态</h3>
-                        </div>
-                        <div class="updates-list">
-                            <div class="update-item">
-                                <div class="update-date">2025-03-30</div>
-                                <div class="update-content">搭建了自己的个人博客 uwu</div>
-                            </div>
-                            <div class="update-item">
-                                <div class="update-date">2025-03-18</div>
-                                <div class="update-content">正在打 Ubuntu 树莓派比赛</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Blog Section -->
-                <section class="content-section" id="blogContent">
-                    <div class="section-card glass-card">
-                        <div class="section-header">
-                            <h3><i class="fas fa-feather-alt"></i> 文章列表</h3>
-                        </div>
-                        <div class="articles-list" id="articlesList">
-                            <!-- 文章会通过 JS 动态渲染 -->
-                            <div class="loading"></div>
-                        </div>
-                    </div>
                 </section>
                 
                 <!-- Projects Section -->
@@ -225,10 +206,15 @@
                     <div class="section-card glass-card">
                         <div class="section-header">
                             <h3><i class="fas fa-laptop-code"></i> 项目展示</h3>
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="projectSearch" class="search-input" placeholder="搜索项目...">
+                                <span class="search-count" id="searchCount"></span>
+                            </div>
                         </div>
-                        <div class="projects-grid">
+                        <div class="projects-grid" id="projectsGrid">
                             <!-- Project 1 -->
-                            <div class="project-item">
+                            <div class="project-item" data-keywords="简单软件限制 开源 C++ Windows API 定时 限制 家长控制 自我约束">
                                 <div class="project-header">
                                     <h4 class="project-title">简单软件限制【已开源】</h4>
                                     <div class="project-links">
@@ -245,7 +231,7 @@
                                 </div>
                             </div>
                             <!-- Project 3 -->
-                            <div class="project-item">
+                            <div class="project-item" data-keywords="独立游戏 开发 Unity C# 游戏设计">
                                 <div class="project-header">
                                     <h4 class="project-title">独立游戏开发中...</h4>
                                     <div class="project-links">
@@ -264,22 +250,75 @@
                             </div>
                             
                             <!-- Project 4 -->
-                            <div class="project-item">
+                            <div class="project-item" data-keywords="个人博客 v3.0 HTML5 CSS3 JavaScript 现代设计 暗色模式 背景切换">
                                 <div class="project-header">
-                                    <h4 class="project-title">个人博客 v2.0</h4>
+                                    <h4 class="project-title">个人博客 v3.0</h4>
                                     <div class="project-links">
                                         <a href="https://github.com/AEjunjun/CatFoxBoke" target="_blank" class="project-link">
                                             <i class="fab fa-github"></i>
                                         </a>
                                     </div>
                                 </div>
-                                <p class="project-desc">全新升级的个人博客，采用现代设计，支持暗色模式和多背景切换</p>
+                                <p class="project-desc">全新升级的个人博客，采用现代毛玻璃设计-Pro 里面包含v2.0旧版本</p>
                                 <div class="project-tech">
                                     <span class="tech-tag">HTML5</span>
                                     <span class="tech-tag">CSS3</span>
                                     <span class="tech-tag">JavaScript</span>
                                 </div>
                             </div>
+							
+							<!-- Project 5 -->
+							<div class="project-item" data-keywords="个人博客 v3.0 HTML5 CSS3 JavaScript 现代设计 暗色模式 背景切换">
+							    <div class="project-header">
+							        <h4 class="project-title">树莓派比赛项目 - 即将开源</h4>
+							        <div class="project-links">
+							        	<!-- 修改是否可以访问 -->
+							            <span class="project-link" style="opacity: 0.5;">
+							                <i class="fas fa-lock"></i>
+							            </span>
+							    </div>
+							    <p class="project-desc">江西省树莓派智慧农林团队比赛项目，开源源代码</p>
+							    <div class="project-tech">
+							        <span class="tech-tag">Python</span>
+							        <span class="tech-tag">HTML</span>
+							        <span class="tech-tag">MQTT-SFTP</span>
+							        <span class="tech-tag">ACK</span>
+							        <span class="tech-tag">MessageID</span>
+							        <span class="tech-tag">SQLite</span>
+							    </div>
+							</div>
+                        </div>
+                        <div class="search-empty hidden" id="searchEmpty">
+                            <i class="fas fa-search"></i>
+                            <p>没有找到匹配的项目 qwq</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Awards Section -->
+                <section class="content-section" id="awardsContent">
+                    <div class="section-card glass-card">
+                        <div class="section-header">
+                            <h3><i class="fas fa-trophy"></i> 荣誉墙</h3>
+                        </div>
+                        <div class="awards-grid">
+                            <!-- Award 1 (占位) -->
+                            <div class="award-item">
+                                <div class="award-img-wrapper">
+                                    <img src="/CatFoxBoke/Award/【哲风壁纸】云层-天空-暗色.png" alt="奖项展示" class="award-img">
+                                    <div class="award-badge">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                </div>
+                                <div class="award-info">
+                                    <h4 class="award-title">奖品名称 - 喵</h4>
+                                    <p class="award-desc">奖项简介将在这里显示</p>
+                                    <span class="award-date">2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="awards-empty-hint">
+                            <p>✨ 荣誉墙持续更新中，敬请期待...</p>
                         </div>
                     </div>
                 </section>
@@ -314,37 +353,39 @@
                         </div>
                     </div>
                     
-                    <!-- Timeline Card -->
+                    <!-- Recent Events Card -->
                     <div class="section-card glass-card">
                         <div class="section-header">
-                            <h3><i class="fas fa-history"></i> 时间线</h3>
+                            <h3><i class="fas fa-bookmark"></i> 最近的事</h3>
                         </div>
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-date">2025 - 至今</div>
-                                <div class="timeline-content">
-                                    <h4>省级树莓派编程比赛</h4>
-                                    <p>参加省级 Ubuntu 树莓派编程比赛，在团队中担任重要位置，项目获得省级奖项 🏆</p>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <span class="accordion-date">2025 - 至今</span>
+                                    <h4 class="accordion-title">省级树莓派编程比赛</h4>
+                                    <span class="accordion-arrow"><i class="fas fa-chevron-down"></i></span>
+                                </div>
+                                <div class="accordion-body">
+                                    <p>参加省级 Ubuntu 树莓派编程比赛，在团队中担任重要位置，6月比赛，拭目以待</p>
                                 </div>
                             </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">2025 - 至今</div>
-                                <div class="timeline-content">
-                                    <h4>独立游戏开发</h4>
-                                    <p>开始独立游戏开发项目，结合音乐与美术元素，致力于创作独特的游戏体验</p>
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <span class="accordion-date">2025 - 至今</span>
+                                    <h4 class="accordion-title">独立游戏开发</h4>
+                                    <span class="accordion-arrow"><i class="fas fa-chevron-down"></i></span>
+                                </div>
+                                <div class="accordion-body">
+                                    <p>开始独立游戏开发项目，个人练练手，尽管现在什么都没做出来...</p>
                                 </div>
                             </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">2025-03</div>
-                                <div class="timeline-content">
-                                    <h4>个人博客上线</h4>
-                                    <p>搭建并上线个人博客网站 v1.0，开始记录学习历程和项目分享</p>
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <span class="accordion-date">2024</span>
+                                    <h4 class="accordion-title">技术学习之路</h4>
+                                    <span class="accordion-arrow"><i class="fas fa-chevron-down"></i></span>
                                 </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-date">2024</div>
-                                <div class="timeline-content">
-                                    <h4>技术学习之路</h4>
+                                <div class="accordion-body">
                                     <p>开始系统学习游戏开发、编程技术和设计工具</p>
                                 </div>
                             </div>
@@ -431,27 +472,6 @@
     <!-- Background Selector Overlay -->
     <div class="bg-selector-overlay" id="bgSelectorOverlay"></div>
     
-    <!-- Article Reader Modal -->
-    <div class="bg-selector-overlay" id="articleOverlay"></div>
-    <div class="article-reader" id="articleReader">
-        <div class="article-reader-header">
-            <button class="back-btn" id="backToList">
-                <i class="fas fa-arrow-left"></i> 返回列表
-            </button>
-            <button class="close-selector" id="closeArticle">&times;</button>
-        </div>
-        <div class="article-reader-content">
-            <h1 class="article-reader-title" id="articleTitle"></h1>
-            <div class="article-reader-meta">
-                <span class="article-reader-date" id="articleDate"></span>
-                <span class="article-reader-category" id="articleCategory"></span>
-            </div>
-            <div class="article-reader-body markdown-body" id="articleBody">
-                <div class="loading"></div>
-            </div>
-        </div>
-    </div>
-    
     <!-- Background Selector Modal -->
     <div class="bg-selector" id="bgSelector">
         <div class="bg-selector-header">
@@ -459,37 +479,17 @@
             <button class="close-selector" id="closeSelector">&times;</button>
         </div>
         <div class="bg-grid">
-            <div class="bg-option active" data-bg="url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>雪山</span>
+            <div class="bg-option active" data-bg="url('/CatFoxBoke/img/星空.png')">
+                <div class="bg-preview" style="background-image: url('/CatFoxBoke/img/星空.png')"></div>
+                <span>我的星空 ✦</span>
             </div>
             <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
                 <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>星空</span>
-            </div>
-            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>森林</span>
-            </div>
-            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>海洋</span>
-            </div>
-            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>城市夜景</span>
-            </div>
-            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>山川</span>
+                <span>银河</span>
             </div>
             <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1507400492013-162706c8c05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
                 <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1507400492013-162706c8c05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
                 <span>极光</span>
-            </div>
-            <div class="bg-option" data-bg="url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
-                <div class="bg-preview" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')"></div>
-                <span>沙漠</span>
             </div>
         </div>
         <div class="custom-bg-upload">
@@ -501,8 +501,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="/CatFoxBoke/posts.js"></script>
     <script src="/CatFoxBoke/script.js"></script>
 </body>
 </html>
