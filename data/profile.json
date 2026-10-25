@@ -1,0 +1,24 @@
+{
+    "name": "俊俊菌",
+    "username": "CatFoxJun",
+    "avatar": "Toxiang.jpg",
+    "background": "img/星空2.png",
+    "bio": "就算步伐很小，也要步步前进",
+    "motto": ["游戏开发", "音乐", "美术","Furry文化爱好者"],
+    "links": [
+        { "label": "哔哩哔哩", "url": "https://space.bilibili.com/3546657970981266", "icon": "bilibili" },
+        { "label": "GitHub", "url": "https://github.com/AEjunjun", "icon": "github" }
+    ],
+    "skills": [
+        { "name": "C / C++", "level": "学习中" },
+        { "name": "Python", "level": "了解" },
+        { "name": "C#", "level": "学习中" },
+        { "name": "Unity", "level": "学习中" },
+        { "name": "HTML5", "level": "熟练" },
+        { "name": "CSS3", "level": "熟练" },
+        { "name": "JavaScript", "level": "熟练" },
+        { "name": "Windows API", "level": "学习中" },
+        { "name": "Ubuntu", "level": "了解" },
+        { "name": "SQLite", "level": "了解" }
+    ]
+}

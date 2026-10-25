@@ -1,0 +1,18 @@
+{
+    "projects": [
+        {
+            "name": "简单软件限制",
+            "desc": "Windows 桌面工具",
+            "tech": ["C++", "Windows API"],
+            "tags": ["C++", "桌面工具", "Windows"],
+            "url": "https://github.com/AEjunjun/Rout"
+        },
+        {
+            "name": "个人博客",
+            "desc": "GitHub Pages 静态部署，Markdown 驱动",
+            "tech": ["HTML", "CSS", "JavaScript"],
+            "tags": ["Web", "JavaScript", "Python"],
+            "url": "https://github.com/AEjunjun/CatFoxBoke"
+        }
+    ]
+}
