@@ -267,11 +267,12 @@ function renderDocList() {
 
     count.textContent = docs.length ? '(' + docs.length + ')' : '';
 
-    // 只展示最新 10 个文档，防止列表过长撑爆右栏
+    // 只显示文件名（部署模式下 file 会带 /仓库名/Article/ 前缀）
     var html = '';
     docs.slice(0, 10).forEach(function (doc, idx) {
+        var displayName = doc.file.split('/').pop();
         html += '<button class="doc-row" onclick="openPost(' + idx + ')">' +
-            '<span class="doc-name">' + escapeHtml(doc.file) + '</span>' +
+            '<span class="doc-name">' + escapeHtml(displayName) + '</span>' +
             '<span class="doc-date">' + doc.date + '</span>' +
             '</button>';
     });
@@ -588,7 +589,11 @@ function openPost(index) {
     var contentEl = document.getElementById('articleContent');
     contentEl.innerHTML = '<p class="loading-text">正在加载 ' + escapeHtml(doc.file) + ' ...</p>';
 
-    fetch('Article/' + encodeURIComponent(doc.file)).then(function (res) {
+    // file 以 "/" 开头时是带部署前缀的绝对路径（GitHub Pages），直接请求
+    var fileUrl = doc.file.charAt(0) === '/'
+        ? doc.file.split('/').map(encodeURIComponent).join('/')
+        : 'Article/' + encodeURIComponent(doc.file);
+    fetch(fileUrl).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.text();
     }).then(function (md) {
