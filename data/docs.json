@@ -1,10 +1,11 @@
 {
-  "updated": "2026-10-26 02:18",
+  "updated": "2026-10-26 03:12",
   "readme": "HOME.md",
+  "prefix": "/CatFoxBoke",
   "count": 6,
   "docs": [
     {
-      "file": "C++ Windows API 学习笔记.md",
+      "file": "/CatFoxBoke/Article/C++ Windows API 学习笔记.md",
       "title": "C++ Windows API 从零开始学习笔记",
       "category": "cpp",
       "categoryName": "C / C++",
@@ -19,7 +20,7 @@
       "readtime": "5 分钟"
     },
     {
-      "file": "GitHub Pages 部署指南.md",
+      "file": "/CatFoxBoke/Article/GitHub Pages 部署指南.md",
       "title": "GitHub Pages 部署个人网站完整指南",
       "category": "web",
       "categoryName": "Web 开发",
@@ -34,7 +35,7 @@
       "readtime": "3 分钟"
     },
     {
-      "file": "Obsidian 学习笔记管理.md",
+      "file": "/CatFoxBoke/Article/Obsidian 学习笔记管理.md",
       "title": "使用 Obsidian 高效管理学习笔记",
       "category": "web",
       "categoryName": "Web 开发",
@@ -49,7 +50,7 @@
       "readtime": "3 分钟"
     },
     {
-      "file": "Python MQTT 入门.md",
+      "file": "/CatFoxBoke/Article/Python MQTT 入门.md",
       "title": "Python MQTT 物联网通信协议入门",
       "category": "python",
       "categoryName": "Python",
@@ -64,7 +65,7 @@
       "readtime": "4 分钟"
     },
     {
-      "file": "树莓派边缘硬件开发实战.md",
+      "file": "/CatFoxBoke/Article/树莓派边缘硬件开发实战.md",
       "title": "树莓派 + ADS1115 边缘硬件开发实战",
       "category": "raspberry",
       "categoryName": "树莓派",
@@ -80,7 +81,7 @@
       "readtime": "5 分钟"
     },
     {
-      "file": "游戏开发学习路线.md",
+      "file": "/CatFoxBoke/Article/游戏开发学习路线.md",
       "title": "游戏开发学习路线分享",
       "category": "gamedev",
       "categoryName": "游戏开发",
