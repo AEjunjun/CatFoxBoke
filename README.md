@@ -82,4 +82,5 @@ python generate_docs_github.py
 ## License
 
 代码部分可自由学习参考；文章内容归作者所有。
+
 代码部分遵循GPLv3.0开源协议
