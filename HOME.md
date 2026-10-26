@@ -10,7 +10,7 @@
 
 我会在这里分享我的项目，还有我的心得，谢谢大家啦！
 
-The shortest way to do many things is to only one thing at a time.
+The shortest way to do many things is to do one thing at a time.
 
 ## 技术栈
 
