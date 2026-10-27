@@ -10,14 +10,14 @@
         { "label": "GitHub", "url": "https://github.com/AEjunjun", "icon": "github" }
     ],
     "skills": [
+        { "name": "C / C++", "level": "学习中" },
+        { "name": "Python", "level": "了解" },
+        { "name": "C#", "level": "学习中" },
+        { "name": "Unity", "level": "学习中" },
         { "name": "HTML5", "level": "熟练" },
         { "name": "CSS3", "level": "熟练" },
         { "name": "JavaScript", "level": "熟练" },
-        { "name": "C / C++", "level": "学习中" },
-        { "name": "C#", "level": "学习中" },
-        { "name": "Unity", "level": "学习中" },
         { "name": "Windows API", "level": "学习中" },
-        { "name": "Python", "level": "了解" },
         { "name": "Ubuntu", "level": "了解" },
         { "name": "SQLite", "level": "了解" }
     ]
