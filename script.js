@@ -293,7 +293,7 @@ function renderHonors(honors) {
     honors.forEach(function (h) {
         html += '<div class="honor-item">';
         if (h.image) {
-            html += '<img class="honor-img" src="' + h.image + '" alt="' + escapeHtml(h.title) + '">';
+            html += '<img class="honor-img" src="' + h.image + '" alt="' + escapeHtml(h.title) + '" onclick="openLightbox(this)">';
         }
         html += '<div class="honor-info">' +
             '<span class="honor-title">' + escapeHtml(h.title) + '</span>' +
@@ -303,6 +303,24 @@ function renderHonors(honors) {
     });
     box.innerHTML = html;
 }
+
+/* ===== 荣誉图片放大查看（Lightbox） ===== */
+function openLightbox(img) {
+    var box = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightboxTitle').textContent = img.alt;
+    box.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+});
 
 /* ===== 项目页：标签自动分类 ===== */
 /* 从 projects.json 的 tags 字段动态提取分类，新增标签无需改代码 */
@@ -506,7 +524,6 @@ function renderPostList() {
             '<div class="post-row-meta">' +
                 '<span class="post-row-cat">' + escapeHtml(doc.categoryName) + '</span>' +
                 '<span>' + doc.date + '</span>' +
-                '<span>' + doc.readtime + '</span>' +
             '</div>' +
             '</button>';
     });
@@ -578,7 +595,6 @@ function openPost(index) {
     document.getElementById('articleCat').textContent = doc.categoryName;
     document.getElementById('articleTitle').textContent = doc.title;
     document.getElementById('articleDate').textContent = doc.date;
-    document.getElementById('articleReadtime').textContent = doc.readtime;
 
     var tagsHtml = '';
     doc.tags.forEach(function (tag) {
