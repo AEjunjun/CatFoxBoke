@@ -13,6 +13,13 @@
             "tech": ["HTML", "CSS", "JavaScript"],
             "tags": ["Web", "JavaScript", "Python"],
             "url": "https://github.com/AEjunjun/CatFoxBoke"
+        },
+        {
+            "name": "云文档查看器",
+            "desc": "GitHub Pages 静态部署，本地部署，Markdown 驱动",
+            "tech": ["HTML", "CSS", "JavaScript"],
+            "tags": ["Web", "JavaScript", "Python"],
+            "url": "https://github.com/AEjunjun/Cloud_Document"
         }
     ]
 }
