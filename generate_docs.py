@@ -19,7 +19,7 @@ generate_docs.py
     excerpt: 自定义摘要
     ---
 
-未提供时：title 取第一个 # 标题，date 取文件修改时间，
+未提供时：title 取第一个 # 标题，date 取文件修改时间（含时分），
 excerpt 取第一段正文，readtime 按约 400 字/分钟自动估算。
 """
 
@@ -39,6 +39,8 @@ MUSIC_DIR = "mp3"
 MUSIC_OUT = os.path.join("data", "music.json")
 BG_DIR = "img"
 BG_OUT = os.path.join("data", "backgrounds.json")
+AWARD_DIR = "Award"
+AWARD_OUT = os.path.join("data", "honors.json")
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
 
@@ -68,6 +70,38 @@ def scan_music():
     with open(MUSIC_OUT, "w", encoding="utf-8") as f:
         json.dump({"cover": cover, "tracks": tracks}, f, ensure_ascii=False, indent=2)
     print("[完成] 已生成 %s，共 %d 首音乐" % (MUSIC_OUT, len(tracks)))
+
+
+def scan_awards():
+    """扫描 Award/ 文件夹生成 data/honors.json（荣誉墙）。
+    已有条目的 title/date/desc 按文件名保留；新图片 title 取文件名。
+    图片改名后重跑本脚本即可自动更新路径，无需手动改 JSON。"""
+    if not os.path.isdir(AWARD_DIR):
+        return
+    old = {}
+    if os.path.isfile(AWARD_OUT):
+        try:
+            with open(AWARD_OUT, "r", encoding="utf-8") as f:
+                for item in json.load(f).get("honors", []):
+                    key = os.path.basename(item.get("image", ""))
+                    if key:
+                        old[key] = item
+        except (ValueError, OSError):
+            pass
+    honors = []
+    for fn in sorted(os.listdir(AWARD_DIR)):
+        if not fn.lower().endswith(IMAGE_EXT):
+            continue
+        prev = old.get(fn, {})
+        honors.append({
+            "title": prev.get("title") or os.path.splitext(fn)[0],
+            "date": prev.get("date", ""),
+            "image": AWARD_DIR + "/" + fn,
+            "desc": prev.get("desc", "")
+        })
+    with open(AWARD_OUT, "w", encoding="utf-8") as f:
+        json.dump({"honors": honors}, f, ensure_ascii=False, indent=2)
+    print("[完成] 已生成 %s，共 %d 项荣誉" % (AWARD_OUT, len(honors)))
 
 
 def parse_front_matter(text):
@@ -141,7 +175,7 @@ def main():
             "category": meta.get("category", "misc"),
             "categoryName": meta.get("categoryName", meta.get("category", "其他")),
             "tags": tags,
-            "date": meta.get("date", mtime.strftime("%Y-%m-%d")),
+            "date": meta.get("date", mtime.strftime("%Y-%m-%d %H:%M")),
             "excerpt": extract_excerpt(meta, body),
             "readtime": calc_readtime(body)
         })
@@ -163,6 +197,7 @@ def main():
     print("[完成] 已生成 %s，共 %d 篇文章" % (OUT_PATH, len(entries)))
     scan_music()
     scan_backgrounds()
+    scan_awards()
     print("[提示] 本地预览请运行: python -m http.server 8000 然后访问 http://localhost:8000")
 
 
