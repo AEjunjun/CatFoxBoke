@@ -3,7 +3,6 @@ title: Python MQTT 物联网通信协议入门
 category: python
 categoryName: Python
 tags: Python,MQTT,物联网,paho-mqtt
-date: 2026-10-26
 excerpt: 使用 paho-mqtt 库实现传感器数据上报，详解发布/订阅模型、QoS 等级与断线重连机制。
 ---
 

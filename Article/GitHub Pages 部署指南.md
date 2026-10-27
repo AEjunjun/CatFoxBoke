@@ -3,7 +3,6 @@ title: GitHub Pages 部署个人网站完整指南
 category: web
 categoryName: Web 开发
 tags: GitHub,GitHub Pages,部署,前端
-date: 2026-10-26
 excerpt: 从本地 HTML 到线上访问，手把手教你用 GitHub Pages 部署静态网站，包括路径前缀、SCP 上传等常见坑。
 ---
 

@@ -3,7 +3,6 @@ title: 使用 Obsidian 高效管理学习笔记
 category: web
 categoryName: Web 开发
 tags: Obsidian,Markdown,笔记,效率
-date: 2026-10-26
 excerpt: 分享我的 Obsidian 笔记管理方法：文件夹结构、Markdown 技巧、双链使用和知识图谱构建。
 ---
 
